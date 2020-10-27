@@ -572,13 +572,14 @@ class TraceWindow(BaseWindow):
             elif setup == "advanced":
                 conditions = []
 
-                S = trace.stoi[: trace.first_bleach]
+
                 E = trace.fret[: trace.first_bleach]
 
                 # TODO: write a warning that stoichiometry will be ignored?
                 if lib.math.contains_nan(trace.red.int):
                     cond1 = True
                 else:
+                    S = trace.stoi[: trace.first_bleach]
                     cond1 = S_med_lo < np.median(S) < S_med_hi
                 cond2 = E_med_lo < np.median(E) < E_med_hi
                 cond3 = (

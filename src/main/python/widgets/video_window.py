@@ -122,11 +122,11 @@ class VideoWindow(BaseWindow):
         """
         return self.data.get(self.currName)
 
-    def newTraceFromVideo(self, n) -> TraceContainer:
+    def newTraceFromVideo(self, n, yx_grn) -> TraceContainer:
         """
         Shortcut to obtain trace, and create a new one if it doesn't exist.
         """
-        tracename = self.currName + "_" + str(n)
+        tracename = self.currName + "_" + str(n) + str(yx_grn)
         if tracename not in self.data.traces:
             self.data.traces[tracename] = TraceContainer(
                 filename=tracename, video=self.currName, n=n,
@@ -414,7 +414,8 @@ class VideoWindow(BaseWindow):
             for n, *row in vid.coloc_grn_red.spots.itertuples():
                 yx_grn, yx_red = lib.utils.pairwise(row)
 
-                trace = self.newTraceFromVideo(n)
+                trace = self.newTraceFromVideo(n, yx_grn)
+
 
                 # Green
                 if vid.grn.exists and yx_grn is not None:
@@ -445,10 +446,11 @@ class VideoWindow(BaseWindow):
                 ) = lib.imgdata.tiff_stack_intensity(
                     vid.acc.raw, *masks_red, raw=True
                 )
-
+                trace.fret = lib.math.calc_E(trace.get_intensities())
                 # Acceptor (if FRET)
                 if vid.alex:
-                    trace.fret = lib.math.calc_E(trace.get_intensities())
+                    #we need to have trace.fret calculated in any case
+                    #trace.fret = lib.math.calc_E(trace.get_intensities())
                     trace.stoi = lib.math.calc_S(trace.get_intensities())
                 else:
                     # If not ALEX, discard previous vid.red data
