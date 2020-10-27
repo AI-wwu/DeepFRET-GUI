@@ -69,7 +69,7 @@ class Ui_HistogramWindow(object):
         )
         self.framesSpinBox.setKeyboardTracking(False)
         self.framesSpinBox.setMinimum(1)
-        self.framesSpinBox.setMaximum(100)
+        self.framesSpinBox.setMaximum(2000)
         self.framesSpinBox.setProperty("value", 10)
         self.framesSpinBox.setObjectName("framesSpinBox")
         self.gridLayout.addWidget(self.framesSpinBox, 1, 1, 1, 1)
